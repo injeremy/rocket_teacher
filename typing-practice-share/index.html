@@ -1,0 +1,1991 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>English Typing Practice</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --ink: #20242d;
+      --muted: #657083;
+      --line: #d9dee8;
+      --blue: #2f6fed;
+      --green: #12805c;
+      --red: #c63d3d;
+      --yellow: #f4c542;
+      --soft-blue: #edf4ff;
+      --soft-red: #fff6f6;
+      --shadow: 0 16px 42px rgba(28, 37, 55, .09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .86), var(--bg)),
+        radial-gradient(circle at top left, rgba(244, 197, 66, .18), transparent 34%),
+        radial-gradient(circle at top right, rgba(47, 111, 237, .14), transparent 32%);
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+      outline: 3px solid rgba(47, 111, 237, .28);
+      outline-offset: 2px;
+    }
+
+    .app {
+      width: min(1120px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 24px 0 32px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 0 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      background: var(--yellow);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-weight: 800;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 3px;
+      font-size: clamp(1.45rem, 2.7vw, 2.25rem);
+      letter-spacing: 0;
+    }
+
+    .subtitle,
+    .muted {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .view[hidden] {
+      display: none;
+    }
+
+    .language-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 5;
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      min-height: 38px;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      box-shadow: 0 8px 24px rgba(28, 37, 55, .08);
+      font-weight: 700;
+    }
+
+    .language-toggle span {
+      min-width: 68px;
+      min-height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      color: var(--muted);
+    }
+
+    .language-toggle[data-lang="ko"] .lang-ko,
+    .language-toggle[data-lang="en"] .lang-en {
+      background: var(--blue);
+      color: white;
+    }
+
+    .role-screen {
+      min-height: min(640px, calc(100vh - 140px));
+      display: grid;
+      place-items: center;
+    }
+
+    .role-panel {
+      width: min(680px, 100%);
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .94);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .role-title {
+      margin-bottom: 8px;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+    }
+
+    .role-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .role-button {
+      min-height: 128px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      text-align: left;
+    }
+
+    .role-button strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.25rem;
+    }
+
+    .role-button span {
+      display: block;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .role-button.primary {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: white;
+    }
+
+    .role-button.primary span {
+      color: rgba(255, 255, 255, .86);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .button,
+    .icon-button,
+    .ghost-button {
+      min-height: 42px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .button {
+      padding: 0 15px;
+      background: var(--ink);
+      border-color: var(--ink);
+      color: white;
+    }
+
+    .ghost-button {
+      padding: 0 13px;
+    }
+
+    .icon-button {
+      width: 44px;
+      display: grid;
+      place-items: center;
+    }
+
+    .stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .panel {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .94);
+      box-shadow: var(--shadow);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .step-header h2 {
+      margin-bottom: 4px;
+      font-size: 1.25rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .choice-card {
+      min-height: 88px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      text-align: left;
+    }
+
+    .choice-card strong,
+    .choice-card span {
+      display: block;
+    }
+
+    .choice-card strong {
+      margin-bottom: 5px;
+    }
+
+    .choice-card span {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.35;
+    }
+
+    .practice-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .lesson-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .lesson-title {
+      margin-bottom: 4px;
+      font-size: 1.15rem;
+    }
+
+    .lesson-note {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .progress-wrap {
+      min-width: 160px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #e9edf5;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      transition: width .2s ease;
+    }
+
+    .target-box {
+      min-height: 150px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcff;
+      font-size: clamp(1.55rem, 3.8vw, 2.3rem);
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .meaning-box {
+      display: none;
+      margin-top: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fffdf4;
+      color: #62521f;
+      line-height: 1.45;
+      font-size: 1.02rem;
+    }
+
+    .meaning-box.show {
+      display: block;
+    }
+
+    .meaning-box strong {
+      margin-right: 8px;
+      color: var(--ink);
+    }
+
+    .char {
+      border-radius: 4px;
+      padding: 1px 0;
+    }
+
+    .char.correct {
+      color: var(--green);
+      background: rgba(18, 128, 92, .08);
+    }
+
+    .char.current {
+      background: rgba(244, 197, 66, .42);
+      box-shadow: inset 0 -3px 0 var(--yellow);
+    }
+
+    .typing-input {
+      width: 100%;
+      height: 56px;
+      margin-top: 14px;
+      padding: 0 16px;
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      font-size: 1.3rem;
+      outline: none;
+    }
+
+    .typing-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(47, 111, 237, .12);
+    }
+
+    .hint,
+    .coach {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    .hint {
+      background: #f1f5fb;
+      color: var(--muted);
+    }
+
+    .coach {
+      position: relative;
+      border: 1px solid rgba(47, 111, 237, .18);
+      background: #f7faff;
+      color: #36506f;
+    }
+
+    .coach::before {
+      content: "";
+      position: absolute;
+      top: -7px;
+      left: 24px;
+      width: 12px;
+      height: 12px;
+      border-left: 1px solid rgba(47, 111, 237, .18);
+      border-top: 1px solid rgba(47, 111, 237, .18);
+      background: inherit;
+      transform: rotate(45deg);
+    }
+
+    .coach.error {
+      border-color: rgba(198, 61, 61, .22);
+      background: var(--soft-red);
+      color: #8c2f2f;
+      font-weight: 700;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .stat {
+      min-height: 74px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .stat span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .stat strong {
+      font-size: 1.3rem;
+    }
+
+    .result {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(18, 128, 92, .2);
+      background: #eef9f4;
+      color: #0f684c;
+      font-weight: 700;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .keyboard {
+      display: grid;
+      gap: 6px;
+      margin-top: 10px;
+      user-select: none;
+    }
+
+    .key-row {
+      display: flex;
+      justify-content: flex-start;
+      gap: 6px;
+    }
+
+    .key {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #ccd3df;
+      border-radius: 6px;
+      background: #eef1f6;
+      color: #3e4654;
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    .key.enter {
+      flex: 1.7;
+    }
+
+    .key.shift {
+      flex: 2.15;
+    }
+
+    .key.space {
+      flex: 5;
+    }
+
+    .key.active {
+      border-color: var(--blue);
+      background: #d8e6ff;
+      color: var(--blue);
+    }
+
+    .line-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .line-chip {
+      width: 100%;
+      min-height: 40px;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      text-align: left;
+    }
+
+    .line-chip.active {
+      border-color: var(--blue);
+      background: var(--soft-blue);
+    }
+
+    .line-chip:disabled {
+      cursor: not-allowed;
+      opacity: .46;
+    }
+
+    .teacher-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: .84rem;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+    }
+
+    .field textarea {
+      min-height: 170px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .teacher-actions,
+    .inline-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .unit-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .unit-card {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .unit-card strong,
+    .unit-card span {
+      display: block;
+    }
+
+    .unit-card span {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .86rem;
+      line-height: 1.35;
+    }
+
+    .save-status {
+      min-height: 24px;
+      margin-top: 10px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .login-card {
+      width: min(440px, 100%);
+      margin: 34px auto 0;
+    }
+
+    .danger {
+      background: var(--soft-red);
+      color: #8c2f2f;
+    }
+
+    @media (max-width: 900px) {
+      header,
+      .lesson-row,
+      .step-header {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .role-actions,
+      .card-grid,
+      .practice-layout,
+      .teacher-layout,
+      .form-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .top-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .app {
+        width: min(100% - 20px, 1120px);
+        padding-top: 14px;
+      }
+
+      .panel,
+      .role-panel {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="language-toggle" id="languageToggleBtn" type="button" aria-label="Language switch">
+    <span class="lang-ko">&#54620;&#44544;</span>
+    <span class="lang-en">English</span>
+  </button>
+  <div class="app">
+    <header id="appHeader" hidden>
+      <div class="brand">
+        <div class="mark" aria-hidden="true">Aa</div>
+        <div>
+          <h1 id="headerTitle">English Typing Practice</h1>
+          <p class="subtitle" id="headerSubtitle">Simple typing practice for class units.</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="ghost-button" id="homeBtn" type="button">Home</button>
+      </div>
+    </header>
+
+    <section class="view role-screen" id="roleView">
+      <div class="role-panel">
+        <div class="mark" style="margin:0 auto 16px;" aria-hidden="true">Aa</div>
+        <h1 class="role-title" id="roleTitle">English Typing Practice</h1>
+        <p class="subtitle" id="roleSubtitle">Choose one. Students start practice. Teachers manage units.</p>
+        <div class="role-actions">
+          <button class="role-button primary" id="startStudentBtn" type="button">
+            <strong id="studentRoleTitle">Student</strong>
+            <span id="studentRoleDesc">Choose grade and unit, then practice.</span>
+          </button>
+          <button class="role-button" id="startTeacherBtn" type="button">
+            <strong id="teacherRoleTitle">Teacher</strong>
+            <span id="teacherRoleDesc">Enter password to add units and upload materials.</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="view stack" id="studentGradeView" hidden>
+      <div class="panel">
+        <div class="step-header">
+          <div>
+            <h2 id="gradeStepTitle">Step 1. Choose Grade</h2>
+          </div>
+        </div>
+        <div class="card-grid" id="gradeGrid"></div>
+      </div>
+    </section>
+
+    <section class="view stack" id="studentUnitView" hidden>
+      <div class="panel">
+        <div class="step-header">
+          <div>
+            <h2 id="unitStepTitle">Step 2. Choose Unit</h2>
+          </div>
+          <button class="ghost-button" id="backToGradesBtn" type="button">Back</button>
+        </div>
+        <div class="card-grid" id="unitGrid"></div>
+      </div>
+    </section>
+
+    <section class="view" id="practiceView" hidden>
+      <div class="practice-layout">
+        <section class="panel" aria-label="Typing practice">
+          <div class="lesson-row">
+            <div>
+              <h2 class="lesson-title" id="lessonTitle">Practice</h2>
+              <p class="lesson-note" id="lessonNote"></p>
+            </div>
+            <div class="progress-wrap" aria-label="Progress">
+              <div class="progress-label"><span id="progressLabel">Progress</span><strong id="progressText">0%</strong></div>
+              <div class="progress"><span id="progressBar"></span></div>
+            </div>
+          </div>
+
+          <div class="target-box" id="targetText" aria-label="Text to type"></div>
+          <div class="meaning-box" id="meaningBox"></div>
+          <input class="typing-input" id="typingInput" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="latin" lang="en" aria-label="Typing input" placeholder="Type here">
+          <div class="hint" id="hintBox">Type exactly. A wrong key will not stay in the box.</div>
+          <div class="coach" id="coachBox" role="status">Look at the yellow key, then type slowly.</div>
+
+          <div class="stats">
+            <div class="stat"><span id="speedLabel">Average Speed</span><strong id="wpm">0 WPM</strong></div>
+            <div class="stat"><span id="timeLabel">Time</span><strong id="timer">0s</strong></div>
+            <div class="stat"><span id="streakLabel">Streak</span><strong id="streak">0</strong></div>
+          </div>
+          <div class="result" id="resultBox" role="status"></div>
+        </section>
+
+        <aside class="panel">
+          <button class="ghost-button" id="changeUnitBtn" type="button">Change Unit</button>
+          <h2 class="lesson-title" id="keyboardTitle" style="margin-top:14px;">Keyboard</h2>
+          <div class="keyboard" id="keyboard" aria-hidden="true"></div>
+          <div class="line-list" id="lineList" aria-label="Practice lines"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="teacherLoginView" hidden>
+      <div class="panel login-card">
+        <h2 id="teacherPasswordTitle">Teacher Password</h2>
+        <p class="lesson-note" id="teacherPasswordDesc">Enter the teacher password to manage practice units.</p>
+        <div class="field">
+          <label for="teacherPassword" id="passwordLabel">Password</label>
+          <input id="teacherPassword" type="password" autocomplete="current-password">
+        </div>
+        <div class="save-status danger" id="loginError" role="status"></div>
+        <div class="teacher-actions">
+          <button class="button" id="loginBtn" type="button">Enter</button>
+          <button class="ghost-button" id="cancelLoginBtn" type="button">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="teacherView" hidden>
+      <div class="teacher-layout">
+        <div class="stack">
+          <div class="panel">
+            <h2 id="teacherEditorTitle">Add or Edit Unit</h2>
+            <p class="lesson-note" id="teacherEditorDesc">Add one word or sentence per line. Students will see these by grade and unit.</p>
+            <div class="form-grid">
+              <div class="field">
+                <label for="gradeInput" id="gradeLabel">Grade</label>
+                <input id="gradeInput" placeholder="Grade 3">
+              </div>
+              <div class="field">
+                <label for="unitInput" id="unitLabel">Unit</label>
+                <input id="unitInput" placeholder="Unit 1">
+              </div>
+              <div class="field full">
+                <label for="titleInput" id="titleLabel">Title</label>
+                <input id="titleInput" placeholder="Hello and Friends">
+              </div>
+              <div class="field full">
+                <label for="itemsInput" id="itemsLabel">Words and Sentences</label>
+              <textarea id="itemsInput" placeholder="hello | 안녕&#10;good morning | 좋은 아침&#10;I am happy. | 나는 행복해."></textarea>
+              </div>
+            </div>
+            <div class="teacher-actions">
+              <button class="button" id="saveUnitBtn" type="button">Save Unit</button>
+              <button class="ghost-button" id="clearFormBtn" type="button">Clear Form</button>
+            </div>
+            <div class="save-status" id="saveStatus" role="status"></div>
+          </div>
+
+          <div class="panel">
+            <h2 id="uploadTitle">Upload and Share Materials</h2>
+            <p class="lesson-note" id="uploadDesc">Use JSON export/import to move units between browsers now. For public URL sharing, this same data model can be connected to Supabase or Firebase.</p>
+            <div class="teacher-actions">
+              <button class="ghost-button" id="exportBtn" type="button">Download JSON</button>
+              <label class="ghost-button" id="uploadFileLabel" for="importFile" style="display:inline-flex;align-items:center;">Upload File</label>
+              <input id="importFile" type="file" accept="application/json,.json,text/csv,.csv" hidden>
+              <button class="ghost-button" id="copyJsonBtn" type="button">Show JSON</button>
+            </div>
+            <div class="field" style="margin-top:12px;">
+              <label for="jsonBox" id="jsonBoxLabel">JSON or CSV box</label>
+              <textarea id="jsonBox" placeholder="JSON array, or CSV lines like:&#10;Grade 3,Unit 1,Hello,hello,안녕&#10;Grade 3,Unit 1,Hello,good morning,좋은 아침"></textarea>
+            </div>
+            <div class="teacher-actions">
+              <button class="button" id="importTextBtn" type="button">Import Box</button>
+              <button class="ghost-button" id="loadSampleBtn" type="button">Load Sample</button>
+              <button class="ghost-button" id="loadCsvSampleBtn" type="button">Load CSV Sample</button>
+              <button class="ghost-button" id="resetAllBtn" type="button">Restore Defaults</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2 id="deployTitle">Deployment Notes</h2>
+            <p class="lesson-note" id="deployDesc">For one shared address, deploy this app to Vercel/Netlify and connect the unit list to a database. Teacher editing and student reading are already separated in this prototype.</p>
+            <div class="field">
+              <label for="syncNotes" id="syncNotesLabel">Suggested database table</label>
+              <textarea id="syncNotes" readonly>typing_units:
+id text primary key
+grade text
+unit text
+title text
+items jsonb -- [{ "text": "hello", "meaning": "안녕" }]
+updated_at timestamp</textarea>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <h2 id="savedUnitsTitle">Saved Units</h2>
+          <div class="unit-list" id="unitList"></div>
+        </aside>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "englishTypingPracticeUnits";
+    const LANG_KEY = "englishTypingPracticeLanguage";
+    const TEACHER_PASSWORD = "teacher";
+    const i18n = {
+      en: {
+        headerTitle: "English Typing Practice",
+        roleTitle: "English Typing Practice",
+        headerSubtitle: "Simple typing practice for class units.",
+        homeBtn: "Home",
+        roleSubtitle: "Choose one. Students start practice. Teachers manage units.",
+        studentRoleTitle: "Student",
+        studentRoleDesc: "Choose grade and unit, then practice.",
+        teacherRoleTitle: "Teacher",
+        teacherRoleDesc: "Enter password to add units and upload materials.",
+        gradeStepTitle: "Step 1. Choose Grade",
+        backToGradesBtn: "Back",
+        progressLabel: "Progress",
+        typingPlaceholder: "Type here",
+        speedLabel: "Average Speed",
+        timeLabel: "Time",
+        streakLabel: "Streak",
+        changeUnitBtn: "Change Unit",
+        keyboardTitle: "Keyboard",
+        teacherPasswordTitle: "Teacher Password",
+        teacherPasswordDesc: "Enter the teacher password to manage practice units.",
+        passwordLabel: "Password",
+        loginBtn: "Enter",
+        cancelLoginBtn: "Cancel",
+        teacherEditorTitle: "Add or Edit Unit",
+        teacherEditorDesc: "Add one word or sentence per line. Students will see these by grade and unit.",
+        gradeLabel: "Grade",
+        unitLabel: "Unit",
+        titleLabel: "Title",
+        itemsLabel: "Words and Sentences",
+        saveUnitBtn: "Save Unit",
+        clearFormBtn: "Clear Form",
+        uploadTitle: "Upload and Share Materials",
+        uploadDesc: "Use JSON export/import to move units between browsers now. For public URL sharing, this same data model can be connected to Supabase or Firebase.",
+        exportBtn: "Download JSON",
+        uploadFileLabel: "Upload File",
+        copyJsonBtn: "Show JSON",
+        jsonBoxLabel: "JSON or CSV box",
+        importTextBtn: "Import Box",
+        loadSampleBtn: "Load Sample",
+        loadCsvSampleBtn: "Load CSV Sample",
+        resetAllBtn: "Restore Defaults",
+        deployTitle: "Deployment Notes",
+        deployDesc: "For one shared address, deploy this app to Vercel/Netlify and connect the unit list to a database. Teacher editing and student reading are already separated in this prototype.",
+        syncNotesLabel: "Suggested database table",
+        savedUnitsTitle: "Saved Units",
+        unitStepTitle: (grade) => `Step 2. Choose Unit - ${grade}`,
+        unitCount: (count) => `${count} unit(s)`,
+        lineCount: (count) => `${count} line(s)`,
+        correctLine: "Correct line. Press Enter to continue.",
+        nextSpace: "Next key: space bar.",
+        nextShift: (key) => `Next key: hold Shift and press ${key}.`,
+        nextKey: (key) => `Next key: ${key}.`,
+        blocked: (expected) => `Not yet. Type "${expected || "the line"}" correctly before pressing Enter.`,
+        correctDone: "Correct. Press Enter for the next line.",
+        goodJob: "Good job. Press Enter when ready.",
+        wrongKey: (attempted, expected) => `Wrong key: "${attempted}". Please type "${expected}" first.`,
+        koreanInput: "Korean is being typed. Press the Han/Eng key, then type in English.",
+        capsLockOn: "Caps Lock is on. Turn off Caps Lock, then type again.",
+        shiftRequired: (letter) => `Type the uppercase letter. Hold Shift and press ${letter.toLowerCase()}.`,
+        noUnits: "No saved units.",
+        edit: "Edit",
+        delete: "Delete",
+        builtIn: "default",
+        editingCopy: "Editing a copy of a default unit.",
+        editingSaved: "Editing saved unit.",
+        addItem: "Add at least one word or sentence.",
+        saved: "Saved. Students can practice this unit now.",
+        deleted: "Unit deleted.",
+        jsonDownloaded: "JSON downloaded.",
+        imported: "Imported units.",
+        csvImported: "CSV imported.",
+        jsonReady: "JSON is ready in the box.",
+        sampleJson: "Sample JSON loaded.",
+        sampleCsv: "Sample CSV loaded.",
+        defaultsRestored: "Defaults restored.",
+        wrongPassword: "Wrong password.",
+        meaningLabel: "Meaning",
+        noMeaning: "No meaning"
+      },
+      ko: {
+        headerTitle: "\uc601\uc5b4 \ud0c0\uc790 \uc5f0\uc2b5",
+        roleTitle: "\uc601\uc5b4 \ud0c0\uc790 \uc5f0\uc2b5",
+        headerSubtitle: "\ud559\uae09 \ub2e8\uc6d0 \uc790\ub8cc\ub85c \uc5f0\uc2b5\ud558\ub294 \uc601\uc5b4 \ud0c0\uc790 \uc5f0\uc2b5\uc785\ub2c8\ub2e4.",
+        homeBtn: "\ucc98\uc74c",
+        roleSubtitle: "\ud558\ub098\ub9cc \uc120\ud0dd\ud558\uc138\uc694. \ud559\uc0dd\uc740 \uc5f0\uc2b5\ud558\uace0, \uad50\uc0ac\ub294 \ub2e8\uc6d0\uc744 \uad00\ub9ac\ud569\ub2c8\ub2e4.",
+        studentRoleTitle: "\ud559\uc0dd",
+        studentRoleDesc: "\ud559\ub144\uacfc \ub2e8\uc6d0\uc744 \uace0\ub978 \ub4a4 \uc5f0\uc2b5\ud569\ub2c8\ub2e4.",
+        teacherRoleTitle: "\uad50\uc0ac",
+        teacherRoleDesc: "\ube44\ubc00\ubc88\ud638 \uc785\ub825 \ud6c4 \ub2e8\uc6d0\uacfc \uc790\ub8cc\ub97c \uad00\ub9ac\ud569\ub2c8\ub2e4.",
+        gradeStepTitle: "1\ub2e8\uacc4. \ud559\ub144 \uc120\ud0dd",
+        backToGradesBtn: "\ub4a4\ub85c",
+        progressLabel: "\uc9c4\ud589\ub960",
+        typingPlaceholder: "\uc5ec\uae30\uc5d0 \uc785\ub825",
+        speedLabel: "\ud3c9\uade0 \uc18d\ub3c4",
+        timeLabel: "\uc2dc\uac04",
+        streakLabel: "\uc5f0\uc18d \uc131\uacf5",
+        changeUnitBtn: "\ub2e8\uc6d0 \ubc14\uafb8\uae30",
+        keyboardTitle: "\ud0a4\ubcf4\ub4dc",
+        teacherPasswordTitle: "\uad50\uc0ac\uc6a9 \ube44\ubc00\ubc88\ud638",
+        teacherPasswordDesc: "\uc5f0\uc2b5 \ub2e8\uc6d0\uc744 \uad00\ub9ac\ud558\ub824\uba74 \uad50\uc0ac\uc6a9 \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\uc138\uc694.",
+        passwordLabel: "\ube44\ubc00\ubc88\ud638",
+        loginBtn: "\uc785\uc7a5",
+        cancelLoginBtn: "\ucde8\uc18c",
+        teacherEditorTitle: "\ub2e8\uc6d0 \ucd94\uac00 \ub610\ub294 \uc218\uc815",
+        teacherEditorDesc: "\ud55c \uc904\uc5d0 \ub2e8\uc5b4 \ub610\ub294 \ubb38\uc7a5\uc744 \ud558\ub098\uc529 \ub123\uc73c\uc138\uc694. \ud559\uc0dd \ud654\uba74\uc5d0\ub294 \ud559\ub144\uacfc \ub2e8\uc6d0\ubcc4\ub85c \ubcf4\uc785\ub2c8\ub2e4.",
+        gradeLabel: "\ud559\ub144",
+        unitLabel: "\ub2e8\uc6d0",
+        titleLabel: "\uc81c\ubaa9",
+        itemsLabel: "\ub2e8\uc5b4\uc640 \ubb38\uc7a5",
+        saveUnitBtn: "\ub2e8\uc6d0 \uc800\uc7a5",
+        clearFormBtn: "\uc785\ub825 \uc9c0\uc6b0\uae30",
+        uploadTitle: "\uc790\ub8cc \uc5c5\ub85c\ub4dc\uc640 \uacf5\uc720",
+        uploadDesc: "\uc9c0\uae08\uc740 JSON/CSV\ub85c \ub2e8\uc6d0 \uc790\ub8cc\ub97c \uc62e\uae38 \uc218 \uc788\uc2b5\ub2c8\ub2e4. URL \uacf5\uc720\ud615 \uc11c\ube44\uc2a4\ub85c \ubc30\ud3ec\ud560 \ub54c\ub294 \uac19\uc740 \ub370\uc774\ud130 \uad6c\uc870\ub97c Supabase\ub098 Firebase\uc5d0 \uc5f0\uacb0\ud558\uba74 \ub429\ub2c8\ub2e4.",
+        exportBtn: "JSON \ub2e4\uc6b4\ub85c\ub4dc",
+        uploadFileLabel: "\ud30c\uc77c \uc5c5\ub85c\ub4dc",
+        copyJsonBtn: "JSON \ubcf4\uae30",
+        jsonBoxLabel: "JSON \ub610\ub294 CSV \uc785\ub825\uce78",
+        importTextBtn: "\uc785\ub825\uce78 \uac00\uc838\uc624\uae30",
+        loadSampleBtn: "\uc608\uc2dc JSON",
+        loadCsvSampleBtn: "\uc608\uc2dc CSV",
+        resetAllBtn: "\uae30\ubcf8\uac12 \ubcf5\uc6d0",
+        deployTitle: "\ubc30\ud3ec \uc548\ub0b4",
+        deployDesc: "\ud558\ub098\uc758 \uacf5\uc720 \uc8fc\uc18c\ub85c \uc6b4\uc601\ud558\ub824\uba74 Vercel/Netlify\uc5d0 \ubc30\ud3ec\ud558\uace0 \ub2e8\uc6d0 \ubaa9\ub85d\uc744 \ub370\uc774\ud130\ubca0\uc774\uc2a4\uc5d0 \uc5f0\uacb0\ud558\uba74 \ub429\ub2c8\ub2e4. \ud604\uc7ac \ud504\ub85c\ud1a0\ud0c0\uc785\uc740 \uad50\uc0ac\uc6a9 \ud3b8\uc9d1\uacfc \ud559\uc0dd\uc6a9 \uc77d\uae30 \ud750\ub984\uc774 \ubd84\ub9ac\ub418\uc5b4 \uc788\uc2b5\ub2c8\ub2e4.",
+        syncNotesLabel: "\ucd94\ucc9c \ub370\uc774\ud130\ubca0\uc774\uc2a4 \ud14c\uc774\ube14",
+        savedUnitsTitle: "\uc800\uc7a5\ub41c \ub2e8\uc6d0",
+        unitStepTitle: (grade) => `2\ub2e8\uacc4. \ub2e8\uc6d0 \uc120\ud0dd - ${grade}`,
+        unitCount: (count) => `${count}\uac1c \ub2e8\uc6d0`,
+        lineCount: (count) => `${count}\uac1c \uc5f0\uc2b5`,
+        correctLine: "\uc815\ud655\ud788 \uc785\ub825\ud588\uc2b5\ub2c8\ub2e4. Enter\ub97c \ub204\ub974\uc138\uc694.",
+        nextSpace: "\ub2e4\uc74c \ud0a4: \uc2a4\ud398\uc774\uc2a4\ubc14",
+        nextShift: (key) => `\ub2e4\uc74c \ud0a4: Shift\ub97c \ub204\ub978 \ucc44 ${key} \uc785\ub825`,
+        nextKey: (key) => `\ub2e4\uc74c \ud0a4: ${key}`,
+        blocked: (expected) => `\uc544\uc9c1\uc785\ub2c8\ub2e4. Enter\ub97c \ub204\ub974\uae30 \uc804\uc5d0 "${expected || "\ubb38\uc7a5"}"\ubd80\ud130 \uc815\ud655\ud788 \uc785\ub825\ud558\uc138\uc694.`,
+        correctDone: "\uc815\ub2f5\uc785\ub2c8\ub2e4. \ub2e4\uc74c \uc904\ub85c \uac00\ub824\uba74 Enter\ub97c \ub204\ub974\uc138\uc694.",
+        goodJob: "\uc798\ud588\uc5b4\uc694. \uc900\ube44\ub418\uba74 Enter\ub97c \ub204\ub974\uc138\uc694.",
+        wrongKey: (attempted, expected) => `\uc798\ubabb \uc785\ub825\ud588\uc2b5\ub2c8\ub2e4: "${attempted}". \uba3c\uc800 "${expected}"\ub97c \uc785\ub825\ud558\uc138\uc694.`,
+        koreanInput: "\ud55c\uae00\uc774 \uc785\ub825\ub418\uace0 \uc788\uc5b4\uc694. \ud55c/\uc601\ud0a4\ub97c \ub204\ub974\uc138\uc694.",
+        capsLockOn: "Caps Lock\uc774 \ucf1c\uc838 \uc788\uc5b4\uc694. Caps Lock\uc744 \ub044\uace0 \ub2e4\uc2dc \uc785\ub825\ud558\uc138\uc694.",
+        shiftRequired: (letter) => `\ub300\ubb38\uc790\ub97c \uc785\ub825\ud574\uc57c \ud574\uc694. Shift\ub97c \ub204\ub978 \ucc44 ${letter.toLowerCase()}\ub97c \uc785\ub825\ud558\uc138\uc694.`,
+        noUnits: "\uc800\uc7a5\ub41c \ub2e8\uc6d0\uc774 \uc5c6\uc2b5\ub2c8\ub2e4.",
+        edit: "\uc218\uc815",
+        delete: "\uc0ad\uc81c",
+        builtIn: "\uae30\ubcf8",
+        editingCopy: "\uae30\ubcf8 \ub2e8\uc6d0\uc744 \ubcf5\uc0ac\ud574\uc11c \uc218\uc815\ud569\ub2c8\ub2e4.",
+        editingSaved: "\uc800\uc7a5\ub41c \ub2e8\uc6d0\uc744 \uc218\uc815\ud569\ub2c8\ub2e4.",
+        addItem: "\ub2e8\uc5b4 \ub610\ub294 \ubb38\uc7a5\uc744 \ud558\ub098 \uc774\uc0c1 \ub123\uc73c\uc138\uc694.",
+        saved: "\uc800\uc7a5\ud588\uc2b5\ub2c8\ub2e4. \uc774\uc81c \ud559\uc0dd\uc774 \uc774 \ub2e8\uc6d0\uc73c\ub85c \uc5f0\uc2b5\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
+        deleted: "\ub2e8\uc6d0\uc744 \uc0ad\uc81c\ud588\uc2b5\ub2c8\ub2e4.",
+        jsonDownloaded: "JSON\uc744 \ub2e4\uc6b4\ub85c\ub4dc\ud588\uc2b5\ub2c8\ub2e4.",
+        imported: "\ub2e8\uc6d0\uc744 \uac00\uc838\uc654\uc2b5\ub2c8\ub2e4.",
+        csvImported: "CSV\ub97c \uac00\uc838\uc654\uc2b5\ub2c8\ub2e4.",
+        jsonReady: "JSON\uc774 \uc785\ub825\uce78\uc5d0 \uc900\ube44\ub418\uc5c8\uc2b5\ub2c8\ub2e4.",
+        sampleJson: "\uc608\uc2dc JSON\uc744 \ubd88\ub7ec\uc654\uc2b5\ub2c8\ub2e4.",
+        sampleCsv: "\uc608\uc2dc CSV\ub97c \ubd88\ub7ec\uc654\uc2b5\ub2c8\ub2e4.",
+        defaultsRestored: "\uae30\ubcf8\uac12\uc744 \ubcf5\uc6d0\ud588\uc2b5\ub2c8\ub2e4.",
+        wrongPassword: "\ube44\ubc00\ubc88\ud638\uac00 \ub9de\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+        meaningLabel: "\ub73b",
+        noMeaning: "\ub73b \uc5c6\uc74c"
+      }    };
+    const defaultUnits = [
+      {
+        id: "grade5-unit4",
+        grade: "5\ud559\ub144",
+        unit: "4\ub2e8\uc6d0",
+        title: "Whose Pen Is This?",
+        note: "5\ud559\ub144 4\ub2e8\uc6d0",
+        hint: "Type the English only. The Korean meaning is for reference.",
+        items: [
+          { text: "Whose pen is this?", meaning: "\uc774\uac83\uc740 \ub204\uad6c\uc758 \ud39c\uc774\ub2c8?" },
+          { text: "Whose pen is that?", meaning: "\uc800\uac83\uc740 \ub204\uad6c\uc758 \ud39c\uc774\ub2c8?" },
+          { text: "It\u2019s Amy\u2019s.", meaning: "\uadf8\uac83\uc740 \uc5d0\uc774\ubbf8\uc758 \uac83\uc774\uc57c." },
+          { text: "It\u2019s mine.", meaning: "\uadf8\uac83\uc740 \ub0b4 \uac83\uc774\uc57c." },
+          { text: "No, it\u2019s Uju\u2019s textbook.", meaning: "\uc544\ub2c8 \uadf8\uac83\uc740 \uc6b0\uc8fc\uc758 \uad50\uacfc\uc11c\uc57c." },
+          { text: "Whose bag is this?", meaning: "\uc774\uac83\uc740 \ub204\uad6c\uc758 \uac00\ubc29\uc774\ub2c8?" },
+          { text: "Whose bag is that?", meaning: "\uc800\uac83\uc740 \ub204\uad6c\uc758 \uac00\ubc29\uc774\ub2c8?" },
+          { text: "It\u2019s Ann\u2019s.", meaning: "\uadf8\uac83\uc740 \uc564\uc758 \uac83\uc774\uc57c." },
+          { text: "It\u2019s small and new.", meaning: "\uadf8\uac83\uc740 \uc791\uace0 \uc0c8\uac83\uc774\uc57c." },
+          { text: "airplane", meaning: "\ube44\ud589\uae30" },
+          { text: "bear", meaning: "\uacf0" },
+          { text: "boat", meaning: "\ubcf4\ud2b8" },
+          { text: "key", meaning: "\uc5f4\uc1e0" },
+          { text: "old", meaning: "\uc624\ub798\ub41c (\ub0a1\uc740)" },
+          { text: "out", meaning: "\ubc16\uc73c\ub85c" },
+          { text: "phone", meaning: "\uc804\ud654\uae30 (\ud734\ub300\uc804\ud654)" },
+          { text: "return", meaning: "\ub3cc\ub824\uc8fc\ub2e4" },
+          { text: "space", meaning: "\uc6b0\uc8fc (\uacf5\uac04)" },
+          { text: "textbook", meaning: "\uad50\uacfc\uc11c" },
+          { text: "tiger", meaning: "\ud638\ub791\uc774" },
+          { text: "top", meaning: "\ud33d\uc774" },
+          { text: "with", meaning: "~\uc640 \ud568\uaed8" }
+        ]
+      },
+      {
+        id: "grade5-unit5",
+        grade: "5\ud559\ub144",
+        unit: "5\ub2e8\uc6d0",
+        title: "Let's Go Shopping",
+        note: "5\ud559\ub144 5\ub2e8\uc6d0",
+        hint: "Type the English only. The Korean meaning is for reference.",
+        items: [
+          { text: "Let\u2019s go shopping.", meaning: "\uc1fc\ud551\ud558\ub7ec \uac00\uc790." },
+          { text: "Sounds good.", meaning: "\uc88b\uc544." },
+          { text: "Sorry, but I\u2019m busy.", meaning: "\ubbf8\uc548\ud558\uc9c0\ub9cc \ub098\ub294 \ubc14\ube60." },
+          { text: "How about at two twenty?", meaning: "2\uc2dc 20\ubd84\uc740 \uc5b4\ub54c?" },
+          { text: "Let\u2019s play a board game.", meaning: "\ubcf4\ub4dc\uac8c\uc784\uc744 \ud558\uc790." },
+          { text: "See you at the park.", meaning: "\uacf5\uc6d0\uc5d0\uc11c \ubcf4\uc790." },
+          { text: "around", meaning: "\uc8fc\uc704\uc5d0 (\ub458\ub808\uc5d0)" },
+          { text: "board", meaning: "\ud310 (\uac8c\uc2dc\ud310)" },
+          { text: "but", meaning: "\ud558\uc9c0\ub9cc" },
+          { text: "camp", meaning: "\ucea0\ud504" },
+          { text: "free", meaning: "\ubb34\ub8cc\uc758 (\uc2dc\uac04\uc774 \uc788\ub294)" },
+          { text: "library", meaning: "\ub3c4\uc11c\uad00" },
+          { text: "market", meaning: "\uc2dc\uc7a5" },
+          { text: "need", meaning: "\ud544\uc694\ud558\ub2e4" },
+          { text: "next", meaning: "\ub2e4\uc74c\uc758" },
+          { text: "parent", meaning: "\ubd80\ubaa8\ub2d8" },
+          { text: "present", meaning: "\uc120\ubb3c" },
+          { text: "rabbit", meaning: "\ud1a0\ub07c" },
+          { text: "shop", meaning: "\uc1fc\ud551\ud558\ub2e4 (\uac00\uac8c)" },
+          { text: "start", meaning: "\uc2dc\uc791\ud558\ub2e4" },
+          { text: "ticket", meaning: "\ud45c (\ud2f0\ucf13)" },
+          { text: "tomorrow", meaning: "\ub0b4\uc77c" },
+          { text: "week", meaning: "\uc8fc (\uc77c\uc8fc\uc77c)" }
+        ]
+      },
+      {
+        id: "grade5-unit6",
+        grade: "5\ud559\ub144",
+        unit: "6\ub2e8\uc6d0",
+        title: "What Will You Do This Summer?",
+        note: "5\ud559\ub144 6\ub2e8\uc6d0",
+        hint: "Type the English only. The Korean meaning is for reference.",
+        items: [
+          { text: "What will you do this summer?", meaning: "\ub108\ub294 \uc774\ubc88 \uc5ec\ub984\uc5d0 \ubb34\uc5c7\uc744 \ud560 \uac70\ub2c8?" },
+          { text: "I\u2019ll join a science camp.", meaning: "\ub098\ub294 \uacfc\ud559 \ucea0\ud504\uc5d0 \ucc38\uac00\ud560 \uac70\uc57c." },
+          { text: "Have a good time.", meaning: "\uc88b\uc740 \uc2dc\uac04 \ubcf4\ub0b4." },
+          { text: "I will grow tomatoes.", meaning: "\ub098\ub294 \ud1a0\ub9c8\ud1a0\ub97c \uae30\ub97c \uac70\uc57c." },
+          { text: "It will be fun.", meaning: "\uadf8\uac83\uc740 \uc7ac\ubbf8\uc788\uc744 \uac70\uc57c." },
+          { text: "banh mi", meaning: "\ubc18\ubbf8 (\ubca0\ud2b8\ub0a8\uc2dd \uc0cc\ub4dc\uc704\uce58)" },
+          { text: "beach", meaning: "\ud574\ubcc0" },
+          { text: "delicious", meaning: "\ub9db\uc788\ub294" },
+          { text: "join", meaning: "\ucc38\uac00\ud558\ub2e4 (\uac00\uc785\ud558\ub2e4)" },
+          { text: "learn", meaning: "\ubc30\uc6b0\ub2e4" },
+          { text: "live", meaning: "\uc0b4\ub2e4" },
+          { text: "project", meaning: "\ud504\ub85c\uc81d\ud2b8" },
+          { text: "science", meaning: "\uacfc\ud559" },
+          { text: "sport", meaning: "\uc2a4\ud3ec\uce20 (\uc6b4\ub3d9)" },
+          { text: "summer", meaning: "\uc5ec\ub984" },
+          { text: "visit", meaning: "\ubc29\ubb38\ud558\ub2e4" }
+        ]
+      }
+    ];
+
+    const views = {
+      role: document.querySelector("#roleView"),
+      studentGrade: document.querySelector("#studentGradeView"),
+      studentUnit: document.querySelector("#studentUnitView"),
+      practice: document.querySelector("#practiceView"),
+      teacherLogin: document.querySelector("#teacherLoginView"),
+      teacher: document.querySelector("#teacherView")
+    };
+    const appHeader = document.querySelector("#appHeader");
+    const gradeGrid = document.querySelector("#gradeGrid");
+    const unitGrid = document.querySelector("#unitGrid");
+    const unitStepTitle = document.querySelector("#unitStepTitle");
+    const lessonTitle = document.querySelector("#lessonTitle");
+    const lessonNote = document.querySelector("#lessonNote");
+    const targetText = document.querySelector("#targetText");
+    const meaningBox = document.querySelector("#meaningBox");
+    const typingInput = document.querySelector("#typingInput");
+    const hintBox = document.querySelector("#hintBox");
+    const coachBox = document.querySelector("#coachBox");
+    const progressText = document.querySelector("#progressText");
+    const progressBar = document.querySelector("#progressBar");
+    const wpmEl = document.querySelector("#wpm");
+    const timerEl = document.querySelector("#timer");
+    const streakEl = document.querySelector("#streak");
+    const resultBox = document.querySelector("#resultBox");
+    const keyboard = document.querySelector("#keyboard");
+    const lineList = document.querySelector("#lineList");
+    const teacherPassword = document.querySelector("#teacherPassword");
+    const loginError = document.querySelector("#loginError");
+    const gradeInput = document.querySelector("#gradeInput");
+    const unitInput = document.querySelector("#unitInput");
+    const titleInput = document.querySelector("#titleInput");
+    const itemsInput = document.querySelector("#itemsInput");
+    const saveStatus = document.querySelector("#saveStatus");
+    const unitList = document.querySelector("#unitList");
+    const jsonBox = document.querySelector("#jsonBox");
+    const importFile = document.querySelector("#importFile");
+    const languageToggleBtn = document.querySelector("#languageToggleBtn");
+
+    const keyboardRows = [
+      [
+        ..."qwertyuiop".split("").map((letter) => ({ label: letter, key: letter }))
+      ],
+      [
+        ..."asdfghjkl".split("").map((letter) => ({ label: letter, key: letter })),
+        { label: ";", key: ";", shift: ":" },
+        { label: "'", key: "'", shift: "\"" },
+        { label: "enter", key: "Enter", className: "enter" }
+      ],
+      [
+        { label: "shift", key: "Shift", className: "shift" },
+        ..."zxcvbnm".split("").map((letter) => ({ label: letter, key: letter })),
+        { label: ",", key: ",", shift: "<" },
+        { label: ".", key: ".", shift: ">" },
+        { label: "/", key: "/", shift: "?" },
+        { label: "shift", key: "Shift", className: "shift" }
+      ],
+      [
+        { label: "space", key: " ", className: "space" }
+      ]
+    ];
+    const shiftedKeyMap = new Map();
+    keyboardRows.flat().forEach((key) => {
+      if (key.shift) shiftedKeyMap.set(key.shift, key.key);
+    });
+    let lang = localStorage.getItem(LANG_KEY) || "ko";
+    let units = loadUnits();
+    let selectedGrade = "";
+    let selectedUnitId = "";
+    let lineIndex = 0;
+    let startTime = null;
+    let timer = null;
+    let completedCharCount = 0;
+    let streak = 0;
+    let completed = false;
+    let lastValidValue = "";
+    let capsLockOn = false;
+    let compositionSafeValue = "";
+    let editingId = "";
+    let teacherUnlocked = false;
+
+    function showView(name) {
+      Object.values(views).forEach((view) => view.hidden = true);
+      views[name].hidden = false;
+      appHeader.hidden = name === "role";
+    }
+
+    function text(key, ...args) {
+      const value = i18n[lang][key];
+      return typeof value === "function" ? value(...args) : value;
+    }
+
+    function setText(id, key) {
+      const el = document.querySelector(`#${id}`);
+      if (el) el.textContent = text(key);
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = lang;
+      languageToggleBtn.dataset.lang = lang;
+      languageToggleBtn.setAttribute("aria-label", lang === "ko" ? "Current language Korean, switch to English" : "Current language English, switch to Korean");
+      [
+        "headerTitle", "roleTitle", "headerSubtitle", "homeBtn", "roleSubtitle", "studentRoleTitle", "studentRoleDesc",
+        "teacherRoleTitle", "teacherRoleDesc", "gradeStepTitle",
+        "backToGradesBtn", "progressLabel", "speedLabel",
+        "timeLabel", "streakLabel", "changeUnitBtn", "keyboardTitle", "teacherPasswordTitle",
+        "teacherPasswordDesc", "passwordLabel", "loginBtn", "cancelLoginBtn",
+        "teacherEditorTitle", "teacherEditorDesc", "gradeLabel", "unitLabel", "titleLabel",
+        "itemsLabel", "saveUnitBtn", "clearFormBtn", "uploadTitle", "uploadDesc",
+        "exportBtn", "uploadFileLabel", "copyJsonBtn", "jsonBoxLabel", "importTextBtn",
+        "loadSampleBtn", "loadCsvSampleBtn", "resetAllBtn", "deployTitle", "deployDesc",
+        "syncNotesLabel", "savedUnitsTitle"
+      ].forEach((key) => setText(key, key));
+
+      typingInput.placeholder = text("typingPlaceholder");
+      if (selectedGrade) unitStepTitle.textContent = text("unitStepTitle", selectedGrade);
+      renderGrades();
+      if (selectedGrade) renderUnits();
+      renderTeacherList();
+      if (selectedUnitId) {
+        updateCoach();
+        renderLineList();
+      }
+    }
+
+    function loadUnits() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        if (!Array.isArray(saved) || !saved.length) return [...defaultUnits];
+        const byId = new Map(defaultUnits.map((unit) => [unit.id, unit]));
+        saved
+          .filter((unit) => !["default-basic", "default-school", "default-phrases"].includes(unit.id))
+          .forEach((unit) => byId.set(unit.id || makeId(), unit));
+        return [...byId.values()];
+      } catch {
+        return [...defaultUnits];
+      }
+    }
+
+    function saveUnits() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(units));
+    }
+
+    function getSelectedUnit() {
+      return units.find((unit) => unit.id === selectedUnitId) || units[0];
+    }
+
+    function itemText(item) {
+      return typeof item === "string" ? item : String(item?.text || "");
+    }
+
+    function itemMeaning(item) {
+      return typeof item === "string" ? "" : String(item?.meaning || "");
+    }
+
+    function normalizeItem(item) {
+      if (typeof item === "string") {
+        const parts = item.split("|").map((part) => part.trim());
+        return {
+          text: parts[0] || "",
+          meaning: parts.slice(1).join(" | ")
+        };
+      }
+      return {
+        text: String(item?.text || ""),
+        meaning: String(item?.meaning || "")
+      };
+    }
+
+    function normalizeItems(items) {
+      return (Array.isArray(items) ? items : [])
+        .map(normalizeItem)
+        .filter((item) => item.text);
+    }
+
+    function makeId() {
+      return `unit-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function uniqueGrades() {
+      return [...new Set(units.map((unit) => unit.grade || "Grade"))].sort();
+    }
+
+    function renderGrades() {
+      gradeGrid.innerHTML = "";
+      uniqueGrades().forEach((grade) => {
+        const gradeUnits = units.filter((unit) => unit.grade === grade);
+        const button = document.createElement("button");
+        button.className = "choice-card";
+        button.type = "button";
+        button.innerHTML = `<strong>${grade}</strong><span>${text("unitCount", gradeUnits.length)}</span>`;
+        button.addEventListener("click", () => {
+          selectedGrade = grade;
+          renderUnits();
+          showView("studentUnit");
+        });
+        gradeGrid.appendChild(button);
+      });
+    }
+
+    function renderUnits() {
+      unitStepTitle.textContent = text("unitStepTitle", selectedGrade);
+      unitGrid.innerHTML = "";
+      units.filter((unit) => unit.grade === selectedGrade).forEach((unit) => {
+        const button = document.createElement("button");
+        button.className = "choice-card";
+        button.type = "button";
+        button.innerHTML = `<strong>${unit.unit}</strong><span>${unit.title} - ${text("lineCount", unit.items.length)}</span>`;
+        button.addEventListener("click", () => {
+          selectedUnitId = unit.id;
+          lineIndex = 0;
+          resetPracticeSession();
+          loadPracticeLine();
+          showView("practice");
+        });
+        unitGrid.appendChild(button);
+      });
+    }
+
+    function buildKeyboard() {
+      keyboard.innerHTML = "";
+      keyboardRows.forEach((row) => {
+        const rowEl = document.createElement("div");
+        rowEl.className = "key-row";
+        row.forEach((entry) => {
+          const key = document.createElement("div");
+          key.className = `key ${entry.className || ""}`.trim();
+          key.dataset.key = entry.key;
+          if (entry.shift) key.dataset.shift = entry.shift;
+          key.textContent = entry.label;
+          rowEl.appendChild(key);
+        });
+        keyboard.appendChild(rowEl);
+      });
+    }
+
+    function renderLineList() {
+      const unit = getSelectedUnit();
+      lineList.innerHTML = "";
+      unit.items.forEach((item, index) => {
+        const button = document.createElement("button");
+        button.className = "line-chip";
+        button.type = "button";
+        button.textContent = itemText(item);
+        button.classList.toggle("active", index === lineIndex);
+        button.disabled = !completed && index !== lineIndex;
+        button.addEventListener("click", () => {
+          if (!completed && index !== lineIndex) {
+            showBlockedMessage();
+            return;
+          }
+          lineIndex = index;
+          loadPracticeLine();
+        });
+        lineList.appendChild(button);
+      });
+    }
+
+    function resetPracticeSession() {
+      streak = 0;
+      completedCharCount = 0;
+      startTime = null;
+      clearInterval(timer);
+      timer = null;
+    }
+
+    function keepCaretAtTypingEnd() {
+      if (document.activeElement !== typingInput) typingInput.focus();
+      try {
+        const end = typingInput.value.length;
+        typingInput.setSelectionRange(end, end);
+      } catch (error) {
+        // Some mobile IME states briefly reject selection changes.
+      }
+    }
+
+    function setTypingValue(value) {
+      typingInput.value = value;
+      keepCaretAtTypingEnd();
+      requestAnimationFrame(keepCaretAtTypingEnd);
+      setTimeout(keepCaretAtTypingEnd, 0);
+    }
+
+    function loadPracticeLine() {
+      const unit = getSelectedUnit();
+      completed = false;
+      lastValidValue = "";
+      setTypingValue("");
+      lessonTitle.textContent = unit.title;
+      lessonNote.textContent = `${unit.grade} / ${unit.unit}`;
+      const meaning = itemMeaning(unit.items[lineIndex]);
+      meaningBox.classList.toggle("show", Boolean(meaning));
+      meaningBox.innerHTML = "";
+      if (meaning) {
+        const label = document.createElement("strong");
+        label.textContent = text("meaningLabel");
+        const value = document.createElement("span");
+        value.textContent = meaning;
+        meaningBox.append(label, value);
+      }
+      hintBox.textContent = lang === "ko"
+        ? "\uc815\ud655\ud788 \uc785\ub825\ud558\uc138\uc694. \ub9de\uac8c \uc785\ub825\ud55c \ub4a4 Enter\ub97c \ub204\ub974\uc138\uc694."
+        : (unit.hint || "Type exactly. Press Enter after a correct line.");
+      resultBox.classList.remove("show");
+      renderTarget();
+      renderLineList();
+      updateStats();
+      typingInput.focus();
+    }
+
+    function renderTarget() {
+      const current = itemText(getSelectedUnit().items[lineIndex]);
+      const typed = typingInput.value;
+      targetText.innerHTML = "";
+      current.split("").forEach((char, index) => {
+        const span = document.createElement("span");
+        span.className = "char";
+        span.textContent = char === " " ? "\u00a0" : char;
+        if (index < typed.length) span.classList.add("correct");
+        if (index === typed.length) span.classList.add("current");
+        targetText.appendChild(span);
+      });
+      updateGuide(normalizeForTyping(current[typed.length] || ""));
+      updateCoach();
+    }
+
+    function updateGuide(nextChar) {
+      document.querySelectorAll(".key").forEach((key) => key.classList.remove("active"));
+      const needsShift = nextChar && (
+        shiftedKeyMap.has(nextChar) ||
+        (nextChar === nextChar.toUpperCase() && nextChar !== nextChar.toLowerCase())
+      );
+      const baseKey = shiftedKeyMap.get(nextChar) || nextChar.toLowerCase();
+      const keyEl = [...document.querySelectorAll(".key")].find((item) => item.dataset.key === baseKey);
+      if (keyEl) keyEl.classList.add("active");
+      if (needsShift) {
+        document.querySelectorAll('.key[data-key="Shift"]').forEach((item) => item.classList.add("active"));
+      }
+      if (capsLockOn) {
+        document.querySelectorAll('.key[data-key="CapsLock"]').forEach((item) => item.classList.add("active"));
+      }
+    }
+
+    function highlightEnterKey() {
+      document.querySelectorAll(".key").forEach((key) => key.classList.remove("active"));
+      document.querySelectorAll('.key[data-key="Enter"]').forEach((item) => item.classList.add("active"));
+    }
+
+    function updateCoach() {
+      if (completed) return;
+      const current = normalizeForTyping(itemText(getSelectedUnit().items[lineIndex]));
+      const next = current[typingInput.value.length];
+      if (capsLockOn) {
+        coachBox.classList.add("error");
+        coachBox.textContent = text("capsLockOn");
+        return;
+      }
+      coachBox.classList.remove("error");
+      if (!next) {
+        coachBox.textContent = text("correctLine");
+      } else if (next === " ") {
+        coachBox.textContent = text("nextSpace");
+      } else if (next === next.toUpperCase() && next !== next.toLowerCase()) {
+        coachBox.textContent = text("nextShift", next.toLowerCase());
+      } else {
+        coachBox.textContent = text("nextKey", next.toLowerCase());
+      }
+    }
+
+    function showBlockedMessage() {
+      const current = normalizeForTyping(itemText(getSelectedUnit().items[lineIndex]));
+      const expected = current[typingInput.value.length] === " " ? "space" : current[typingInput.value.length];
+      coachBox.classList.add("error");
+      coachBox.textContent = text("blocked", expected);
+      typingInput.focus();
+    }
+
+    function updateStats() {
+      const current = normalizeForTyping(itemText(getSelectedUnit().items[lineIndex]));
+      const typed = typingInput.value;
+      const progress = current.length ? Math.round((typed.length / current.length) * 100) : 0;
+      const seconds = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
+      const minutes = Math.max(seconds / 60, 1 / 60);
+      const totalTyped = completedCharCount + (completed ? 0 : typed.length);
+      const wpm = startTime ? Math.round((totalTyped / 5) / minutes) : 0;
+      wpmEl.textContent = `${wpm} WPM`;
+      timerEl.textContent = `${seconds}s`;
+      streakEl.textContent = String(streak);
+      progressText.textContent = `${Math.min(100, progress)}%`;
+      progressBar.style.width = `${Math.min(100, progress)}%`;
+    }
+
+    function completeLine() {
+      if (completed) return;
+      completed = true;
+      completedCharCount += normalizeForTyping(itemText(getSelectedUnit().items[lineIndex])).length;
+      streak += 1;
+      coachBox.classList.remove("error");
+      coachBox.textContent = text("correctDone");
+      resultBox.textContent = text("goodJob");
+      resultBox.classList.add("show");
+      highlightEnterKey();
+      renderLineList();
+      updateStats();
+    }
+
+    function goNextLine() {
+      const unit = getSelectedUnit();
+      lineIndex = (lineIndex + 1) % unit.items.length;
+      loadPracticeLine();
+    }
+
+    function renderTeacherList() {
+      unitList.innerHTML = "";
+      if (!units.length) {
+        const empty = document.createElement("div");
+        empty.className = "unit-card";
+        empty.textContent = text("noUnits");
+        unitList.appendChild(empty);
+        return;
+      }
+      units.forEach((unit) => {
+        const card = document.createElement("div");
+        card.className = "unit-card";
+        const builtIn = unit.id.startsWith("default-");
+        card.innerHTML = `<strong>${unit.grade} / ${unit.unit}</strong><span>${unit.title} - ${text("lineCount", unit.items.length)}${builtIn ? ` - ${text("builtIn")}` : ""}</span>`;
+        const actions = document.createElement("div");
+        actions.className = "inline-actions";
+        const edit = document.createElement("button");
+        edit.className = "ghost-button";
+        edit.type = "button";
+        edit.textContent = text("edit");
+        edit.addEventListener("click", () => fillTeacherForm(unit));
+        actions.appendChild(edit);
+        if (!builtIn) {
+          const del = document.createElement("button");
+          del.className = "ghost-button danger";
+          del.type = "button";
+          del.textContent = text("delete");
+          del.addEventListener("click", () => {
+            units = units.filter((item) => item.id !== unit.id);
+            saveUnits();
+            renderTeacherList();
+            renderGrades();
+            saveStatus.textContent = text("deleted");
+          });
+          actions.appendChild(del);
+        }
+        card.appendChild(actions);
+        unitList.appendChild(card);
+      });
+    }
+
+    function fillTeacherForm(unit) {
+      editingId = unit.id.startsWith("default-") ? "" : unit.id;
+      gradeInput.value = unit.grade;
+      unitInput.value = unit.unit;
+      titleInput.value = unit.title;
+      itemsInput.value = unit.items.map((item) => {
+        const entryText = itemText(item);
+        const meaning = itemMeaning(item);
+        return meaning ? `${entryText} | ${meaning}` : entryText;
+      }).join("\n");
+      saveStatus.textContent = unit.id.startsWith("default-") ? text("editingCopy") : text("editingSaved");
+    }
+
+    function clearTeacherForm() {
+      editingId = "";
+      gradeInput.value = "";
+      unitInput.value = "";
+      titleInput.value = "";
+      itemsInput.value = "";
+      saveStatus.textContent = "";
+      gradeInput.focus();
+    }
+
+    function saveTeacherUnit() {
+      const grade = gradeInput.value.trim() || "Custom Grade";
+      const unit = unitInput.value.trim() || "Custom Unit";
+      const title = titleInput.value.trim() || `${grade} ${unit}`;
+      const items = normalizeItems(itemsInput.value.split(/\r?\n/).map((item) => item.trim()).filter(Boolean));
+      if (!items.length) {
+        saveStatus.textContent = text("addItem");
+        saveStatus.style.color = "var(--red)";
+        itemsInput.focus();
+        return;
+      }
+      const data = {
+        id: editingId || makeId(),
+        grade,
+        unit,
+        title,
+        note: `${grade} / ${unit}`,
+        hint: "Type the teacher's word or sentence exactly. Press Enter after a correct line.",
+        items
+      };
+      if (editingId) {
+        units = units.map((item) => item.id === editingId ? data : item);
+      } else {
+        units = [...units, data];
+      }
+      saveUnits();
+      selectedGrade = grade;
+      selectedUnitId = data.id;
+      saveStatus.style.color = "var(--green)";
+      saveStatus.textContent = text("saved");
+      renderTeacherList();
+      renderGrades();
+      clearTeacherForm();
+    }
+
+    function exportJson() {
+      const payload = JSON.stringify(units, null, 2);
+      jsonBox.value = payload;
+      const blob = new Blob([payload], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "english-typing-units.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      saveStatus.textContent = text("jsonDownloaded");
+    }
+
+    function importJsonText(text) {
+      const parsed = JSON.parse(text);
+      if (!Array.isArray(parsed)) throw new Error("JSON must be an array.");
+      const clean = parsed.map((unit) => ({
+        id: unit.id || makeId(),
+        grade: String(unit.grade || "Custom Grade"),
+        unit: String(unit.unit || "Custom Unit"),
+        title: String(unit.title || unit.unit || "Untitled"),
+        note: String(unit.note || `${unit.grade || "Custom Grade"} / ${unit.unit || "Custom Unit"}`),
+        hint: String(unit.hint || "Type exactly. Press Enter after a correct line."),
+        items: normalizeItems(unit.items)
+      })).filter((unit) => unit.items.length);
+      if (!clean.length) throw new Error("No valid units found.");
+      units = clean;
+      saveUnits();
+      renderGrades();
+      renderTeacherList();
+      saveStatus.style.color = "var(--green)";
+      saveStatus.textContent = text("imported");
+    }
+
+    function splitCsvLine(line) {
+      const cells = [];
+      let current = "";
+      let quoted = false;
+      for (let i = 0; i < line.length; i += 1) {
+        const char = line[i];
+        const next = line[i + 1];
+        if (char === '"' && quoted && next === '"') {
+          current += '"';
+          i += 1;
+        } else if (char === '"') {
+          quoted = !quoted;
+        } else if (char === "," && !quoted) {
+          cells.push(current.trim());
+          current = "";
+        } else {
+          current += char;
+        }
+      }
+      cells.push(current.trim());
+      return cells;
+    }
+
+    function importCsvText(text) {
+      const grouped = new Map();
+      text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).forEach((line, index) => {
+        const cells = splitCsvLine(line);
+        if (index === 0 && cells.join(",").toLowerCase().includes("grade,unit,title,text")) return;
+        if (cells.length < 4) throw new Error("CSV rows need grade, unit, title, text.");
+        const [grade, unit, title, practiceText, meaning = ""] = cells;
+        const key = `${grade}||${unit}||${title}`;
+        if (!practiceText) return;
+        if (!grouped.has(key)) {
+          grouped.set(key, {
+            id: makeId(),
+            grade: grade || "Custom Grade",
+            unit: unit || "Custom Unit",
+            title: title || unit || "Untitled",
+            note: `${grade || "Custom Grade"} / ${unit || "Custom Unit"}`,
+            hint: "Type the teacher's word or sentence exactly. Press Enter after a correct line.",
+            items: []
+          });
+        }
+        grouped.get(key).items.push({ text: practiceText.trim(), meaning: meaning.trim() });
+      });
+      const imported = [...grouped.values()].filter((unit) => unit.items.length);
+      if (!imported.length) throw new Error("No valid CSV rows found.");
+      units = imported;
+      saveUnits();
+      renderGrades();
+      renderTeacherList();
+      saveStatus.style.color = "var(--green)";
+      saveStatus.textContent = text("csvImported");
+    }
+
+    function importBoxText(text) {
+      const trimmed = text.trim();
+      if (!trimmed) throw new Error("Paste JSON or CSV first.");
+      if (trimmed.startsWith("[") || trimmed.startsWith("{")) {
+        importJsonText(trimmed);
+      } else {
+        importCsvText(trimmed);
+      }
+    }
+
+    function hasKorean(textValue) {
+      return /[\u3131-\u318e\uac00-\ud7a3]/.test(textValue);
+    }
+
+    function normalizeForTyping(textValue) {
+      return textValue
+        .replace(/[，、]/g, ",")
+        .replace(/[‘’´`]/g, "'")
+        .replace(/[“”]/g, '"')
+        .replace(/[？]/g, "?")
+        .replace(/[．。]/g, ".")
+        .replace(/[／]/g, "/")
+        .replace(/[（]/g, "(")
+        .replace(/[）]/g, ")")
+        .replace(/\u00a0/g, " ");
+    }
+
+    function isShiftRequiredMismatch(attempted, expected) {
+      return attempted &&
+        expected &&
+        attempted.toLowerCase() === expected.toLowerCase() &&
+        attempted === attempted.toLowerCase() &&
+        expected === expected.toUpperCase() &&
+        expected !== expected.toLowerCase();
+    }
+
+    function setCoachError(message) {
+      coachBox.classList.add("error");
+      coachBox.textContent = message;
+    }
+
+    function rejectKoreanInput(safeValue = lastValidValue) {
+      setTypingValue(safeValue);
+      lastValidValue = safeValue;
+      renderTarget();
+      updateStats();
+      setCoachError(text("koreanInput"));
+    }
+
+    function getMistakeMessage(attempted, expected) {
+      const shownAttempt = attempted === " " ? "space" : attempted;
+      const shownExpected = expected === " " ? "space" : expected;
+      if (capsLockOn) return text("capsLockOn");
+      if (isShiftRequiredMismatch(attempted, expected)) return text("shiftRequired", expected);
+      return text("wrongKey", shownAttempt, shownExpected);
+    }
+
+    function applyManualCharacter(char) {
+      const current = normalizeForTyping(itemText(getSelectedUnit().items[lineIndex]));
+      if (completed || current[typingInput.value.length] !== char) return false;
+      setTypingValue(`${typingInput.value}${char}`.slice(0, current.length));
+      lastValidValue = typingInput.value;
+      if (!startTime) {
+        startTime = Date.now();
+        timer = setInterval(updateStats, 500);
+      }
+      renderTarget();
+      updateStats();
+      if (typingInput.value === current) completeLine();
+      return true;
+    }
+
+    typingInput.addEventListener("beforeinput", (event) => {
+      const data = normalizeForTyping(event.data || "");
+      if (data === ",") {
+        if (applyManualCharacter(",")) event.preventDefault();
+        return;
+      }
+      if (hasKorean(data)) {
+        event.preventDefault();
+        rejectKoreanInput();
+      }
+    });
+
+    typingInput.addEventListener("compositionstart", () => {
+      compositionSafeValue = lastValidValue;
+    });
+
+    typingInput.addEventListener("compositionupdate", (event) => {
+      if (hasKorean(event.data || typingInput.value)) rejectKoreanInput(compositionSafeValue);
+    });
+
+    typingInput.addEventListener("compositionend", (event) => {
+      if (hasKorean(event.data || typingInput.value)) rejectKoreanInput(compositionSafeValue);
+    });
+
+    typingInput.addEventListener("input", () => {
+      const current = normalizeForTyping(itemText(getSelectedUnit().items[lineIndex]));
+      const normalizedValue = normalizeForTyping(typingInput.value);
+      if (typingInput.value !== normalizedValue) setTypingValue(normalizedValue);
+      const trimmed = typingInput.value.slice(0, current.length);
+      if (typingInput.value !== trimmed) setTypingValue(trimmed);
+      if (hasKorean(typingInput.value)) {
+        rejectKoreanInput();
+        return;
+      }
+      if (!current.startsWith(typingInput.value)) {
+        const attempted = typingInput.value[typingInput.value.length - 1] || "";
+        setTypingValue(lastValidValue);
+        renderTarget();
+        updateStats();
+        setCoachError(getMistakeMessage(attempted, current[lastValidValue.length]));
+        return;
+      }
+      lastValidValue = typingInput.value;
+      if (!startTime && typingInput.value.length > 0) {
+        startTime = Date.now();
+        timer = setInterval(updateStats, 500);
+      }
+      renderTarget();
+      updateStats();
+      if (typingInput.value === current) completeLine();
+    });
+
+    typingInput.addEventListener("keydown", (event) => {
+      if (event.getModifierState) capsLockOn = event.getModifierState("CapsLock");
+      if (capsLockOn && event.key !== "CapsLock") setCoachError(text("capsLockOn"));
+      if (hasKorean(event.key)) {
+        event.preventDefault();
+        rejectKoreanInput();
+        return;
+      }
+      const isCommaInput = event.key === "," || event.key === "，" || (event.code === "Comma" && !event.shiftKey && event.key !== "<");
+      if (isCommaInput) {
+        if (applyManualCharacter(",")) event.preventDefault();
+        return;
+      }
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      if (completed) goNextLine();
+      else showBlockedMessage();
+    });
+
+    typingInput.addEventListener("keyup", (event) => {
+      if (!event.getModifierState) return;
+      const nextCapsLockOn = event.getModifierState("CapsLock");
+      if (capsLockOn === nextCapsLockOn) return;
+      capsLockOn = nextCapsLockOn;
+      renderTarget();
+    });
+
+    document.querySelector("#startStudentBtn").addEventListener("click", () => {
+      renderGrades();
+      showView("studentGrade");
+    });
+    document.querySelector("#startTeacherBtn").addEventListener("click", () => {
+      showView(teacherUnlocked ? "teacher" : "teacherLogin");
+      if (!teacherUnlocked) teacherPassword.focus();
+    });
+    document.querySelector("#homeBtn").addEventListener("click", () => showView("role"));
+    languageToggleBtn.addEventListener("click", () => {
+      lang = lang === "ko" ? "en" : "ko";
+      localStorage.setItem(LANG_KEY, lang);
+      applyLanguage();
+    });
+    document.querySelector("#backToGradesBtn").addEventListener("click", () => showView("studentGrade"));
+    document.querySelector("#changeUnitBtn").addEventListener("click", () => showView("studentUnit"));
+    document.querySelector("#loginBtn").addEventListener("click", () => {
+      if (teacherPassword.value === TEACHER_PASSWORD) {
+        teacherUnlocked = true;
+        loginError.textContent = "";
+        renderTeacherList();
+        showView("teacher");
+      } else {
+        loginError.textContent = text("wrongPassword");
+        teacherPassword.select();
+      }
+    });
+    teacherPassword.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") document.querySelector("#loginBtn").click();
+    });
+    document.querySelector("#cancelLoginBtn").addEventListener("click", () => showView("role"));
+    document.querySelector("#saveUnitBtn").addEventListener("click", saveTeacherUnit);
+    document.querySelector("#clearFormBtn").addEventListener("click", clearTeacherForm);
+    document.querySelector("#exportBtn").addEventListener("click", exportJson);
+    document.querySelector("#copyJsonBtn").addEventListener("click", () => {
+      jsonBox.value = JSON.stringify(units, null, 2);
+      saveStatus.textContent = text("jsonReady");
+    });
+    document.querySelector("#importTextBtn").addEventListener("click", () => {
+      try {
+        importBoxText(jsonBox.value);
+      } catch (error) {
+        saveStatus.style.color = "var(--red)";
+        saveStatus.textContent = error.message;
+      }
+    });
+    importFile.addEventListener("change", async () => {
+      const file = importFile.files[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        if (file.name.toLowerCase().endsWith(".csv")) {
+          importCsvText(text);
+        } else {
+          importBoxText(text);
+        }
+      } catch (error) {
+        saveStatus.style.color = "var(--red)";
+        saveStatus.textContent = error.message;
+      }
+      importFile.value = "";
+    });
+    document.querySelector("#loadSampleBtn").addEventListener("click", () => {
+      jsonBox.value = JSON.stringify(defaultUnits, null, 2);
+      saveStatus.textContent = text("sampleJson");
+    });
+    document.querySelector("#loadCsvSampleBtn").addEventListener("click", () => {
+      jsonBox.value = [
+        "grade,unit,title,text,meaning",
+        "Grade 3,Unit 1,Hello,hello,안녕",
+        "Grade 3,Unit 1,Hello,good morning,좋은 아침",
+        "Grade 3,Unit 1,Hello,I am happy.,나는 행복해.",
+        "Grade 4,Unit 2,Food,apple,사과",
+        "Grade 4,Unit 2,Food,I like pizza.,나는 피자를 좋아해."
+      ].join("\n");
+      saveStatus.textContent = text("sampleCsv");
+    });
+    document.querySelector("#resetAllBtn").addEventListener("click", () => {
+      units = [...defaultUnits];
+      saveUnits();
+      renderGrades();
+      renderTeacherList();
+      clearTeacherForm();
+      saveStatus.style.color = "var(--green)";
+      saveStatus.textContent = text("defaultsRestored");
+    });
+
+    buildKeyboard();
+    applyLanguage();
+    renderGrades();
+    renderTeacherList();
+  </script>
+</body>
+</html>
+
